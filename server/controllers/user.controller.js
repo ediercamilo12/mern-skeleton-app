@@ -5,8 +5,7 @@ import formidable from 'formidable';
 import fs from 'fs';
 import { extend } from 'lodash';
 import defaultImage from './../../client/assets/images/profile-pic.png';
-import { exec } from 'child_process';
-import { Await } from 'react-router';
+
 
 
 const create = async (req, res) => {
@@ -83,6 +82,7 @@ const update = async (req, res) => {
       await user.save();
       user.hashed_password = '';
       user.salt = '';
+      res.json({ user });
 
       res.json({user});
     } catch (err) {
@@ -94,29 +94,7 @@ const update = async (req, res) => {
   });
 };
 
-const from = new formidable.IncomingForm();
-from.keepExtension = true;
-from.parse(req,async(err, fields, files) => {
-  if (err) {
-    return res.status(400).json({
-      error: 'Photo could not be uploaded'
-    });
-  }
-})
 
-let user = req.profile;
-user = extend(user, fields);
-user.update = Date.now();
-
-if (files.photo) {
-  user.photo.data = fs.readFileSync(files.photo.filepath);
-  user.photo.contentType = files.photo.type;
-}
-
-await user.save();
-user.hashed_password = '';
-user.salt='';
-res.json({ user });
 
 const addFollower = async (req, res) => {
   try {
@@ -138,16 +116,8 @@ const addFollower = async (req, res) => {
   }
 };
 
-const result = await User.findByIdAndUpdate(
-  req.body.followId,
-  {$push: { followers: req.body.userId }},
-  { new: true }
-)
-.populate('following', '_id name')
-.populate('followers', '_id name')
-.exec();
 
-const defaultphoto = (req, res) => {
+const defaultPhoto = (req, res) => {
   return res.sendFile(`${process.cwd()}${defaultImage}`)
 };
 
@@ -220,7 +190,7 @@ export default {
   remove,
   userById,
   update,
-  defaultphoto,
+  defaultPhoto,
   addFollower,
   addFollowing,
   removeFollower,
