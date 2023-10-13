@@ -1,12 +1,12 @@
-import Category from '../models/categories.model';
+import Category from '../models/category.model';
 import merge from 'lodash/merge';
-import dbErrorHandler from '../helpers/dbErrorHandler';
+import errorHandler from '../helpers/dbErrorHandler';
 
 
 const create = async (req, res) => {
-    const Category = new Category(req.body);
+    const category = new Category(req.body);
     try {
-      await Category.save();
+      await category.save();
       return res.status(200).json({
         message: 'Successfully signed up!'
       });
@@ -19,8 +19,8 @@ const create = async (req, res) => {
 
   const list = async (req, res) => {
     try {
-      let Category = await User.find().select('name email updated created');
-      res.json(Category);
+      let category = await Category.find().select('name email updated created');
+      res.json(category);
     } catch (err) {
       return res.status('400').json({
         error: errorHandler.getErrorMessage(err)
@@ -28,14 +28,14 @@ const create = async (req, res) => {
     }
   };
 
-  const CategoryById = async (req, res, next, id) => {
+  const categoryById = async (req, res, next, id) => {
     try {
-      let Category = await Category.findById({_id: id})
+      let category = await Category.findById({_id: id})
       .propulate('following', 'id_name')
       .propulate('followers', 'id_name')
       .exec();
   
-      if(!Category) {
+      if(!category) {
         return res.status(400).json({
           error: 'Category not found'
         });
@@ -52,14 +52,14 @@ const create = async (req, res) => {
 
   const update = async (req, res, next) =>{
     try {
-        let Category = req.profile;
-        Category = merge(Category, req.body);
+        let category = req.profile;
+        category = merge(category, req.body);
 
-        Category.update = Date.now();
-        await Category.save();
-        Category.hashed_password = '';
-        Category.salt ='';
-        req.json(Category);
+        category.update = Date.now();
+        await category.save();
+        category.hashed_password = '';
+        category.salt ='';
+        req.json(category);
     } catch (err) {
         console.log(err);
         return res.status(400).json({
@@ -79,9 +79,9 @@ const create = async (req, res) => {
   const remove = async (req, res, next) => {
     try {
       console.log('deleted');
-      let Category = req.profile;
-      console.log('Category to remove', Category);
-      let deletedCategory = await Category.deleteOne();
+      let category = req.profile;
+      console.log('category to remove', category);
+      let deletedCategory = await category.deleteOne();
       deletedCategory.hashed_password = '';
       deletedCategory.salt = '';
       res.json(deletedCategory);
@@ -97,7 +97,7 @@ const create = async (req, res) => {
   export default {
     create,
     list,
-    CategoryById,
+    categoryById,
     update,
     read,
     remove,

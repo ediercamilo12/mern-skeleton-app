@@ -10,8 +10,10 @@ const CategoryShema = new mongoose.Schema([{
    description:{
     type: String,
     index: true,
-    required: 'description is required'
+    required: 'description is required',
+    minlength: 10,
+    maxlength: 250
    }
-}])
+}]);
 
 export default mongoose.model('Category', CategoryShema);
