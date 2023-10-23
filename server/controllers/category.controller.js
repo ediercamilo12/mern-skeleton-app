@@ -28,6 +28,9 @@ const create = async (req, res) => {
     }
   };
 
+
+  
+
   const categoryById = async (req, res, next, id) => {
     try {
       let category = await Category.findById({_id: id})
