@@ -18,20 +18,15 @@ const PostShema = new mongoose.Schema([{
         minlength: 1,
         maxlength: 250
       },
-
-    user: {
-        type:mongoose.Schema.ObjectId,
-        ref: user,
-        required: 'user required'
-    },
-
+    
     created: {
         type: Date,
         default: Date.now
       },
-    
-    user: [{type:mongoose.Schema.ObjectId,ref:'User'}]
 
+
+    user: [{type:mongoose.Schema.ObjectId,ref:'User'}]
+    
 }]);
 
 export default mongoose.model('Post', PostShema);

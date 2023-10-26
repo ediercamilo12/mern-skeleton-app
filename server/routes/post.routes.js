@@ -4,18 +4,15 @@ import authController from "../controllers/auth.controller";
 
 const router = express.Router()
 
-router.route('/api/post')
+router.route('/api/posts')
 .get(postController.list)
 .post(postController.create);
 
-router.route('/api/users/follow')
-  .put(authCtrl.requireSignin,
-    userCtrl.addUser)
 
-router.route('/api/post/:postById')
-.get(authController.requireSignin, authController.read)
-.post(authController.requireSignin, authController.hasAuthorization, authController.update)
-.delete(authController.requireSignin, authController.hasAuthorization, authController.remove);
+router.route('/api/posts/:postById')
+.get(authController.requireSignin)
+.post(authController.requireSignin, authController.hasAuthorization, postController.update)
+.delete(authController.requireSignin, authController.hasAuthorization, postController.remove);
 
 
 router.param('postById', postController.postById);
