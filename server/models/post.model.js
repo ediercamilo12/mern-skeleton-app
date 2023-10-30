@@ -12,7 +12,7 @@ const PostShema = new mongoose.Schema([{
         contentType: String
       },
 
-    comments: {
+    description: {
         type: String,
         index: true,
         minlength: 1,

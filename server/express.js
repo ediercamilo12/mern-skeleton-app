@@ -22,6 +22,7 @@ import authRoutes from './routes/auth.routes';
 import userRoutes from './routes/user.routes';
 import categoryRoutes from './routes/category.routes';
 import postRoutes from './routes/post.routes';
+import commentRotes from './routes/comment.routes';
 
 
 import Template from './../template';
@@ -43,6 +44,7 @@ app.use('/', authRoutes);
 app.use('/', userRoutes);
 app.use('/', categoryRoutes);
 app.use('/', postRoutes);
+app.use('/', commentRotes);
 
 
 

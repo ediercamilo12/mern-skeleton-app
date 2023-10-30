@@ -29,8 +29,8 @@ const create = async (req, res) => {
 
   const postById = async (req, res, next, id) => {
     try {
-      let post = await Post.findById({_id: id})
-      .propulate('like', 'id_')
+      let post = await post.findById({_id: id})
+      .propulate('like', 'id')
       .propulate('comment', 'id_title')
       .exec();
   
