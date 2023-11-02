@@ -1,21 +1,40 @@
-import express from "express";
-import postController from "../controllers/post.controller";
-import authController from "../controllers/auth.controller";
-
-const router = express.Router()
-
-router.route('/api/posts')
-.get(postController.list)
-.post(postController.create);
+import express from 'express';
+import authCtrl from '../controllers/auth.controller';
+import userCtrl from '../controllers/user.controller';
+import postCtrl from '../controllers/post.controller';
 
 
-router.route('/api/posts/:postById')
-.get(authController.requireSignin)
-.post(authController.requireSignin, authController.hasAuthorization, postController.update)
-.delete(authController.requireSignin, authController.hasAuthorization, postController.remove);
+const router = express.Router();
 
+router.route('/api/posts/feed/:userId')
+.get(authCtrl.requireSignin, postCtrl.listNewsFeed);
 
-router.param('postById', postController.postById);
+router.route('/api/posts/by/:userId')
+.get(authCtrl.requireSignin, postCtrl.listByUser);
 
+router.route('/api/posts/new')
+.post(authCtrl.requireSignin, postCtrl.create);
+
+router.route('/api/posts/photo/:postId')
+.get(postCtrl.photo);
+
+router.route('/api/posts/like').
+put(authCtrl.requireSignin, postCtrl.like);
+
+router.route('/api/posts/unlike').
+put(authCtrl.requireSignin, postCtrl.unlike);
+
+router.route('/api/posts/:postId')
+.delete(authCtrl.requireSignin, postCtrl.isPoster, postCtrl.remove);
+
+router.route('/api/posts/comment')
+.put(authCtrl.requireSignin, postCtrl.comment);
+
+router.route('/api/posts/uncomment')
+.put(authCtrl.requireSignin, postCtrl.uncomment);
+
+router.param('userId', userCtrl.userById);
+
+router.param('postId', postCtrl.postById);
 
 export default router;

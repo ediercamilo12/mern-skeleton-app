@@ -8,8 +8,6 @@ router.route('/api/comments')
   .get(commentControllers.list)
   .post(commentControllers.create);
 
-
-
 router.route('/api/comments/addlike')
   .put(authController.requireSignin,
     commentControllers.addlike)
